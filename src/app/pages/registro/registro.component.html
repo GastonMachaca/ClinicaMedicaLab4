@@ -1,0 +1,183 @@
+<body class="text-center">
+    
+    <main class="form-signin w-100 m-auto">
+      <form *ngIf="!transicion3">
+        <img *ngIf="transicion" class="mb-4" src="../../../assets/logo.png" alt="" width="72" height="70">
+        <h1 *ngIf="transicion" class="h3 mb-3 fw-normal">¿Desea registrarse cómo?</h1>
+        
+        <div class="row" *ngIf="transicion">
+            <div class="col">
+                <label class="labelTxt">Especialista</label>
+                <br>
+                <button type="button" class="btnEsp" (click)="transicionRegistro('Especialista')"></button> 
+            </div>
+            <div class="col">
+                <label class="labelTxt">Paciente</label>
+                <br>
+                <button type="button" class="btnPac" (click)="transicionRegistro('Paciente')"></button> 
+            </div>
+        </div>
+
+        <button class="btn btnAcceso" type="button" routerLink="/">Volver al Menu Principal</button>
+
+      </form>
+
+      <form class="form" [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <img *ngIf="transicion3" class="mb-4" src="../../../assets/logo.png" alt="" width="72" height="70">
+        <h1 *ngIf="transicion3" class="h4 mb-3 fw-normal">Registro {{seleccion}}</h1>
+        
+        <div *ngIf="transicion3">
+
+            <div class="form-group">
+                <input class="form-control" formControlName="nombre" type="text" placeholder="Nombre" [ngClass]="{ 'is-invalid': submitted && f['nombre'].errors }" required>
+                <div *ngIf="submitted && f['nombre'].errors" class="invalid-feedback">
+                    <div *ngIf="f['nombre'].errors['required']">Completar Nombre</div>
+                    <div *ngIf="f['nombre'].errors['pattern']">
+                      El nombre no puede contener caracteres invalidos (numeros,puntos,espacios,etc.)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" formControlName="apellido" type="text" placeholder="Apellido" [ngClass]="{ 'is-invalid': submitted && f['apellido'].errors }" required>
+                <div *ngIf="submitted && f['apellido'].errors" class="invalid-feedback">
+                    <div *ngIf="f['apellido'].errors['required']">Completar Apellido</div>
+                    <div *ngIf="f['apellido'].errors['pattern']">
+                      El apellido no puede contener caracteres invalidos (numeros,puntos,espacios,etc.)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" formControlName="edad" type="number" placeholder="Edad" [ngClass]="{ 'is-invalid': submitted && f['edad'].errors }" required> 
+                <div *ngIf="submitted && f['edad'].errors"  class="invalid-feedback">
+                    <div *ngIf="f['edad'].errors['required']">Completar Edad</div>
+                    <div *ngIf="f['edad'].errors['min']">
+                      {{errorEdad}}.
+                    </div>
+                    <div *ngIf="f['edad'].errors['max']">
+                      Solo se acepta especialistas de hasta 80 años.
+                    </div>
+                    <div *ngIf="f['edad'].errors['pattern']">
+                      No puede haber edad con coma.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" formControlName="dni" type="text" placeholder="Dni" [ngClass]="{ 'is-invalid': submitted && f['dni'].errors }" required>
+                <div *ngIf="submitted && f['dni'].errors" class="invalid-feedback">
+                    <div *ngIf="f['dni'].errors['required']">Completar DNI</div>
+                    <div *ngIf="f['dni'].errors['minlength']">
+                    El DNI no puede tener menos de 8 numeros
+                    </div>
+                    <div *ngIf="f['dni'].errors['maxlength']">
+                    El DNI no puede tener mas de 8 numeros
+                    </div>
+                    <div *ngIf="f['dni'].errors['pattern']">
+                    El DNI no puede contener caracteres invalidos (letras,puntos,espacios,etc.)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="opciones=='Especialidad'">
+                <select class="form-control" formControlName="especialidad" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['especialidad'].errors }">
+                    <option value="" selected>Seleccione...</option>
+                    <option *ngFor="let e of especialidades" [ngValue]="e.especialidad">{{e.especialidad}}</option>
+                </select>
+
+                <button class="btn btnAcceso" type="button" (click) = "initEspecialidad()" style="margin-top: 15px;">Agregar Especialidad</button>
+                
+                <form *ngIf = "nuevaEspecialidad" [formGroup]="extraEspecialidad" (ngSubmit)="anadirEspecialidad()">
+                    <input class="form-control" formControlName = "newEspecialidad" type="text" placeholder="Nueva Especialidad" [ngClass]="{ 'is-invalid': newSubmitted && fp['newEspecialidad'].errors }">
+                    <div *ngIf="newSubmitted && fp['newEspecialidad'].errors" class="invalid-feedback">
+                        <div *ngIf="fp['newEspecialidad'].errors['required']">Completar la nueva especialidad</div>
+                        <div *ngIf="fp['newEspecialidad'].errors['pattern']">
+                          La nueva especialidad no puede contener caracteres invalidos (numeros,puntos,espacios,etc.)
+                        </div>
+                    </div>
+                    <div class="buttonsNewEspecialidad">
+                        <button class="btn btnAcceso" type="submit" >Agregar</button>
+                        <button class="btn btnAcceso" type="button" (click)="cerrarEspecialidad()">Cancelar</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="form-group" *ngIf="opciones!='Especialidad'">
+                <input class="form-control" formControlName="obraSocial" type="text" placeholder="Obra Social" [ngClass]="{ 'is-invalid': submitted && f['obraSocial'].errors }" required>
+                <div *ngIf="submitted && f['obraSocial'].errors" class="invalid-feedback">
+                    <div *ngIf="f['obraSocial'].errors['required']">Completar Obra Social</div>
+                    <div *ngIf="f['obraSocial'].errors['pattern']">
+                      La obra social no puede contener caracteres invalidos (numeros,puntos,espacios,etc.)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" formControlName="email" type="email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required>
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    <div *ngIf="f['email'].errors['required']">Email es requerido</div>
+                    <div *ngIf="f['email'].errors['email']">Email invalido</div>
+                </div>  
+            </div>
+            
+            <div class="form-group">
+                <input class="form-control"  formControlName="password" type="password" placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" required>
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div *ngIf="f['password'].errors['required']">Password es requerido</div>
+                    <div *ngIf="f['password'].errors['minlength']">
+                        La contraseña no puede tener menos de 6 caracteres.
+                    </div>
+                </div>  
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <input class="input-file" id="file" type ="file" accept=".png, .jpg, .jepg" multiple (change)="cargarImagen($event)">
+                    <label for="file" id="file" class="input-file__btn">Seleccionar Fotos</label>
+                </div>
+
+                <div *ngIf="exitoImagen == true && seleccion == 'Paciente'">
+                    <img [src]="prevImgPacientes[0]" style="width: 120px; height: 80px; margin-right: 20px; border: 1px solid black;" alt="imagen1">
+                    <img [src]="prevImgPacientes[1]" style="width: 120px; height: 80px; border: 1px solid black;" alt="imagen2">
+                </div>
+
+                <div *ngIf="exitoImagen == true && seleccion != 'Paciente'">
+                    <img [src]="prevImgEspecialista" style="width: 120px; height: 80px; margin-right: 20px; border: 1px solid black;" alt="imagen1">
+                </div>
+
+                <div *ngIf="failImagen" class="alert alert-warning" role="alert">
+                    {{mensajeImagen}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- <re-captcha formControlName="recaptcha" (resolved)="addTokenLog('Reactive form mode resolved', $event)">
+                </re-captcha> -->
+                <ngx-recaptcha2 #captchaElem
+                [siteKey]="siteKey"
+                formControlName="recaptcha"
+                [ngClass]="{ 'is-invalid': submitted && f['recaptcha'].errors }">
+                </ngx-recaptcha2>
+
+                <div *ngIf="submitted && f['recaptcha'].errors" class="invalid-feedback">
+                    <div *ngIf="f['recaptcha'].errors['required']">No confirmo el captcha</div>
+                </div>  
+            </div>
+
+            <!-- <button type="submit" >Registrar</button> -->
+
+            <button class="btn btnAcceso" style="margin-right: 5px;background-color: lightblue;" type="submit">
+                <span>Registrar</span>
+            </button>
+
+            <button class="btn btnAcceso" type="button" (click)="restaurarSeleccion()">
+                <span>Volver</span>
+            </button>
+        </div>
+      </form>
+
+    </main>
+
+</body>

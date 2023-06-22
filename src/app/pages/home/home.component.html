@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="bg-dark col-auto col-md-4 col-lg-2 d-flex flex-column justify-content-between  min-vh-100">
+            <div class="mt-4">
+                <a class="text-white text-decoration-none d-flex align-items-center justify-content-center" role="button"> 
+                    <img src="assets/logo.png" alt="logo" width="30" height="30" style="margin-right: 5px;" >
+                    <span class="fs-5 d-none d-sm-inline">Clinica NOVA</span>
+                </a>
+                <hr class="text-white d-none d-sm-block"/>
+                <ul class="nav nav-pills flex-column mt-4 mt-sm-0" id="menu">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" aria-current="page" routerLink="usuarios" routerLinkActive = "active">
+                            <i class="bi bi-people-fill"></i> 
+                            <span class="ms-2 d-none d-sm-inline">Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"> 
+                        <a class="nav-link text-white" aria-current="page" routerLink="misTurnos" routerLinkActive = "active">
+                            <i class="bi bi-journal"></i> 
+                            <span class="ms-2 d-none d-sm-inline">Mis Turnos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item my-1">
+                        <a class="nav-link text-white" data-bs-toogle="collapse" id="turnos"  data-target="turnos" routerLink="turnos" routerLinkActive = "active" >
+                            <i class="bi bi-folder-plus"></i> 
+                            <span class="ms-2 d-none d-sm-inline">Solicitar Turno</span>
+                        </a>
+                        <ul class="nav collapse ms-1 flex-column" id="turnos" data-bs-parent="#turnos">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#" aria-current="page">Item 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#">Item 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- <li class="nav-item"> 
+                        <a href="#" class="nav-link text-white" aria-current="page">
+                            <i class="bi bi-x-octagon"></i> 
+                            <span class="ms-2 d-none d-sm-inline">Proximamente</span>
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+            <div>
+                <hr class="text-white d-none d-sm-block"/>
+                <ul class="nav nav-pills flex-column mt-4 mt-sm-0" id="menu">
+                    <li class="nav-item my-1">
+                        <a style="cursor: pointer;" class="nav-link text-white" data-bs-toogle="collapse"  data-target="#sidemenu" >
+                            <i class="bi bi-person-circle"></i>
+                            <span class="ms-2 d-none d-sm-inline">Mi Perfil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"> 
+                        <a style="cursor: pointer;" class="nav-link text-white" aria-current="page" (click)="cerrarSesion()">
+                            <i class="bi bi-x-octagon"></i> 
+                            <span class="ms-2 d-none d-sm-inline">Cerrar Sesion</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            
+        <div class="p-3" style="flex-shrink: initial;">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+
+</div>
